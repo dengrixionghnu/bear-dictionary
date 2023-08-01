@@ -1,11 +1,11 @@
 <template>
   <view class="container">
-      <text class="word-content">{{content}}</text>
+      <text class="word-content">{{word.content}}</text>
       <view class="pron-container">
         <image class="pron-icon" src="/static/pron-icon.png"></image>
         <text class="word-pron" @click="read">/{{pron}}/</text>
       </view>
-      <text v-if="showNot" class="word-definition">{{definition}}</text>
+      <text v-if="showNot" class="word-definition">{{word.definition}}</text>
       <view class="button-miss" @click="show(true)">
         <text class="word-miss" @click="show(true)">不认识</text>
       </view>
@@ -24,10 +24,12 @@
     export default {
       data() {
         return {
-          content: "",
-          pron: "",
-          definition: "",
-          audioUrl: "",
+          word:{
+            content: "",
+            pron: "",
+            definition: "",
+            audioUrl: ""
+          },
           worldListMax: null,
           vocListMax: null,
           showNot:false
@@ -35,6 +37,7 @@
       },
       onLoad() {
         this.worldListMax = 1000
+        this.word = {};
         this.getWord()
       },
       methods: {
@@ -44,26 +47,16 @@
             }    
           },
           show: function(result){
-            this.$set(this, 'showNot', result);
+            this.showNot = result;
           },
           next:function(){
             this.show(false)
             this.getWord();
           },
-          setData:function(obj){
-            for (const key in obj) {
-              this.$set(this.data, key, obj[key]); 
-            }
-  
-          },
           getWord:function(){
             var index = Math.floor(Math.random() * this.worldListMax) +1
             var word = wordList.wordList[index] 
-            this.$set(this, 'content', word.content);
-            this.$set(this, 'pron', word.pron);
-            this.$set(this, 'definition', word.definition);
-            this.$set(this, 'audioUrl', null);
-  
+            this.word ={...word};
           }
       }
     }
