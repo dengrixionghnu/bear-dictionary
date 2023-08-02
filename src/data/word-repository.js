@@ -3,5 +3,8 @@ var word_list =  [{"content":"reproduce","definition":"复制；再生；生殖�
 module.exports = {
     getWordList: function(){
         return word_list;
+    },
+    gerReviewList: function(){
+        return new Array();
     }
 }

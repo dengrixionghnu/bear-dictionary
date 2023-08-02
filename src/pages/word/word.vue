@@ -5,12 +5,17 @@
         <image class="pron-icon" src="../../static/pron-icon.png"></image>
         <text class="word-pron" @click="read">/{{word.pron}}/</text>
       </view>
-      <view class="container">
+      <view class="pron-container">
       <text v-show="showNot" class="word-definition">{{word.definition}}</text>
       <text v-show="!showNot" class="word-definition"> </text>
-    </view>
-      <view class="button-miss" @click="show(true)">
-        <text class="word-miss" @click="show(true)">不认识</text>
+      </view>
+
+
+      <view class="button-next" @click="show(true)">
+        <text class="word-next" @click="show(true)">查看</text>
+      </view>
+      <view class="button-next" @click="mark()">
+        <text class="word-next" @click="mark()">标记</text>
       </view>
       <view class="button-next" @click="next">
         <text class="word-next" @click="next">下一个</text>
@@ -35,12 +40,18 @@
           },
           worldListMax: null,
           vocListMax: null,
-          showNot:false
+          showNot:false,
+          index:-1,
         }
       },
       onLoad() {
         this.worldListMax = wordRepository.getWordList().length
         this.word = {};
+        var array = wordRepository.gerReviewList();
+        var reviewList = uni.getStorageSync('reviewList', array); 
+        if(!reviewList){
+          array.push(...reviewList);
+        }
         this.getWord()
       },
       methods: {
@@ -58,10 +69,24 @@
           },
           getWord:function(){
             var index = Math.floor(Math.random() * this.worldListMax) +1
+            this.index=index;
             var word = wordRepository.getWordList()[index] 
             this.word ={...word};
+          },
+          mark:function(){
+            var array = wordRepository.gerReviewList();
+            console.log("add review"+this.index)
+            array.push(this.index);
           }
-      }
+      },
+      mounted() {
+        uni.addInterceptor('onHide', (options) => {
+          // 在小程序退出之前执行保存数据的操作
+          var array = wordRepository.gerReviewList();
+          uni.setStorageSync('reviewList', array); 
+          // 返回 true 继续执行 onHide 事件
+          return true;
+        });}
     }
   </script>
   
@@ -77,14 +102,16 @@
   }
   
   .word-content {
-    margin: 234rpx auto 18rpx;
+    margin: 200rpx auto 18rpx;
     font-family: Chalkboard;
     font-size: 64rpx;
+    word-wrap: break-word;
   }
   
   .pron-container {
     display: flex;
     flex-direction: row;
+    margin-bottom: 10px;
   }
   
   .pron-icon {
@@ -127,6 +154,7 @@
   
   .button-next {
     display: flex;
+    margin:10px;
     flex-direction: column;
     width: 360rpx;
     height: 70rpx;
