@@ -92,9 +92,9 @@ export default {
 }
 
 .input-container {
-  margin-top: 94rpx;
+  margin-top: 50rpx;
   width: 100%;
-  height: 88rpx;
+  height: 50rpx;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -106,7 +106,7 @@ export default {
 }
 
 .button-search {
-    margin: 226rpx;
+  margin: 10rpx;
   display: flex;
   flex-direction: column;
   width: 360rpx;

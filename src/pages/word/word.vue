@@ -7,7 +7,7 @@
       </view>
       <view class="pron-container">
       <text v-show="showNot" class="word-definition">{{word.definition}}</text>
-      <text v-show="!showNot" class="word-definition"> </text>
+      <text v-if="message" class="word-definition">{{message}} </text>
       </view>
 
 
@@ -42,6 +42,7 @@
           vocListMax: null,
           showNot:false,
           index:-1,
+          message:""
         }
       },
       onLoad() {
@@ -61,9 +62,11 @@
             }    
           },
           show: function(result){
+            this.message = ""
             this.showNot = result;
           },
           next:function(){
+            this.message = ""
             this.show(false)
             this.getWord();
           },
@@ -74,9 +77,13 @@
             this.word ={...word};
           },
           mark:function(){
+            this.message = "标记成功"
+            this.showNot = false;
             var array = wordRepository.gerReviewList();
             console.log("add review"+this.index)
-            array.push(this.index);
+            if(!wordRepository.gerReviewList().includes(this.index)){
+              array.push(this.index);
+            }
           }
       },
       mounted() {
@@ -127,7 +134,8 @@
   }
   
   .word-definition {
-    margin-top: 194rpx;
+    margin-top: 100rpx;
+    margin-bottom: 100rpx;
     font-family: Yuanti TC;
     font-size: 30rpx;
     color: #585858;

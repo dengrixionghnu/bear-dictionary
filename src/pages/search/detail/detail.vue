@@ -6,10 +6,17 @@
         <text class="word-pron">/{{word.pron}}/</text>
         </view>
         <text class="word-definition">{{word.definition}}</text>
+        <text v-if="message" class="word-definition">{{message}}</text>
+
+
+        <view class="button-search" @click="mark">
+            <text class="text-search" @click="mark">标记</text>
+        </view>
 
         <view class="button-search" @click="goback">
             <text class="text-search" @click="goback">返回</text>
         </view>
+
     </view>
 </template>
 
@@ -22,11 +29,14 @@ import wordRepository from '../../../data/word-repository'
         word:{
           content: "",
           pron: "",
-          definition: ""}
+          definition: ""},
+          index:0,
+          message:""
       }
     },
     onLoad(option) {
         var index = option.id;
+        this.index = index;
         var findword = wordRepository.getWordList()[index];
         this.word={...findword}
     
@@ -43,9 +53,25 @@ import wordRepository from '../../../data/word-repository'
                     }
                     })
 
-        }
+        },
+          mark:function(){
+            var array = wordRepository.gerReviewList();
+            console.log("add review"+this.index)
+            this.message="标记成功"
+            if(!array.includes(this.index)){
+                array.push(this.index);
+            }
+          }
   
-    }
+    },
+    mounted() {
+        uni.addInterceptor('onHide', (options) => {
+          // 在小程序退出之前执行保存数据的操作
+          var array = wordRepository.gerReviewList();
+          uni.setStorageSync('reviewList', array); 
+          // 返回 true 继续执行 onHide 事件
+          return true;
+        });}
   }
 
 </script>
@@ -85,14 +111,15 @@ import wordRepository from '../../../data/word-repository'
 }
 
 .word-definition {
-  margin-top: 194rpx;
+  margin-top: 100rpx;
+  margin-bottom: 100rpx;
   font-family: Yuanti TC;
   font-size: 30rpx;
   color: #585858;
 }
 
 .button-search {
-    margin: 226rpx;
+  margin: 10ßrpx;
   display: flex;
   flex-direction: column;
   width: 360rpx;
