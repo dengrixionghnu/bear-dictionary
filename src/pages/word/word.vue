@@ -2,10 +2,13 @@
   <view class="container">
       <text class="word-content">{{word.content}}</text>
       <view class="pron-container">
-        <image class="pron-icon" src="/static/pron-icon.png"></image>
-        <text class="word-pron" @click="read">/{{pron}}/</text>
+        <image class="pron-icon" src="../../static/pron-icon.png"></image>
+        <text class="word-pron" @click="read">/{{word.pron}}/</text>
       </view>
-      <text v-if="showNot" class="word-definition">{{word.definition}}</text>
+      <view class="container">
+      <text v-show="showNot" class="word-definition">{{word.definition}}</text>
+      <text v-show="!showNot" class="word-definition"> </text>
+    </view>
       <view class="button-miss" @click="show(true)">
         <text class="word-miss" @click="show(true)">不认识</text>
       </view>
@@ -19,7 +22,7 @@
   
   
   <script>
-  import wordList from '../../data/word-list'
+  import wordRepository from '../../data/word-repository'
   
     export default {
       data() {
@@ -36,7 +39,7 @@
         }
       },
       onLoad() {
-        this.worldListMax = 1000
+        this.worldListMax = wordRepository.getWordList().length
         this.word = {};
         this.getWord()
       },
@@ -55,7 +58,7 @@
           },
           getWord:function(){
             var index = Math.floor(Math.random() * this.worldListMax) +1
-            var word = wordList.wordList[index] 
+            var word = wordRepository.getWordList()[index] 
             this.word ={...word};
           }
       }

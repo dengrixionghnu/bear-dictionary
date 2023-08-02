@@ -3,14 +3,40 @@
 		{
 			"path": "pages/word/word",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "bear dictionary"
+			}
+		},{
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "bear dictionary"
+			}
+		},{
+			"path": "pages/search/detail/detail",
+			"style": {
+				"navigationBarTitleText": "bear dictionary"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "bear dictionary",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
-	}
+	},
+	"tabBar": {
+		"backgroundColor" : "#F7F7FA",
+		"borderStyle": "white",
+		"list": [{
+		  "pagePath": "pages/word/word",
+		  "text": "单词",
+		  "iconPath": "static/home.png",
+		  "selectedIconPath": "static/home-selected.png"
+		},
+		{
+		  "pagePath": "pages/search/search",
+		  "text": "辞典",
+		  "iconPath": "static/search.png",
+		  "selectedIconPath": "static/search-selected.png"
+		}]
+	  }
 }
