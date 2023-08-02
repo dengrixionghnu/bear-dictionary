@@ -1,11 +1,13 @@
 <template>
 <view class="container">
   <image class="logo" src="../../static/search-logo.png"></image>
-  <text class="name">Bear Dictionary</text>
+  <text class="name">小熊词典</text>
   <view class="input-container">
     <input class="input-search" v-model="search" @focus="resetMessage" placeholder="请输入..." type="text"/>
   </view>
+  <view class="input-container">
   <text v-if="searchMessage" class="word-definition">{{searchMessage}}</text>
+  </view>
   <view class="button-search" @click="doSearch">
     <text class="text-search" @click="doSearch">查询</text>
   </view>

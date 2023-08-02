@@ -3,23 +3,23 @@
 		{
 			"path": "pages/word/word",
 			"style": {
-				"navigationBarTitleText": "bear dictionary"
+				"navigationBarTitleText": "小熊词典"
 			}
 		},{
 			"path": "pages/search/search",
 			"style": {
-				"navigationBarTitleText": "bear dictionary"
+				"navigationBarTitleText": "小熊词典"
 			}
 		},{
 			"path": "pages/search/detail/detail",
 			"style": {
-				"navigationBarTitleText": "bear dictionary"
+				"navigationBarTitleText": "小熊词典"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "bear dictionary",
+		"navigationBarTitleText": "小熊词典",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
