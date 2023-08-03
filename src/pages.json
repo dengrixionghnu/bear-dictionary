@@ -6,16 +6,6 @@
 				"navigationBarTitleText": "小熊词典"
 			}
 		},{
-			"path": "pages/search/search",
-			"style": {
-				"navigationBarTitleText": "小熊词典"
-			}
-		},{
-			"path": "pages/search/detail/detail",
-			"style": {
-				"navigationBarTitleText": "小熊词典"
-			}
-		},{
 			"path": "pages/review/review",
 			"style": {
 				"navigationBarTitleText": "小熊词典"
@@ -31,24 +21,19 @@
 	"tabBar": {
 		"backgroundColor" : "#F7F7FA",
 		"borderStyle": "white",
-		"list": [{
-		  "pagePath": "pages/word/word",
-		  "text": "单词",
-		  "iconPath": "static/home.png",
-		  "selectedIconPath": "static/home-selected.png"
-		},
-		{
-		  "pagePath": "pages/search/search",
-		  "text": "辞典",
-		  "iconPath": "static/search.png",
-		  "selectedIconPath": "static/search-selected.png"
-		},
-		{
-			"pagePath": "pages/review/review",
-			"text": "回顾",
-			"iconPath": "static/settings.png",
-			"selectedIconPath": "static/settings-selected.png"
-		  }
-	]
+		"list": [
+			{
+				"pagePath": "pages/word/word",
+				"text": "单词",
+				"iconPath": "static/search.png",
+				"selectedIconPath": "static/search-selected.png"
+			},
+			{
+				"pagePath": "pages/review/review",
+				"text": "我的",
+				"iconPath": "static/home.png",
+				"selectedIconPath": "static/home-selected.png"
+			}
+			]
 	  }
 }

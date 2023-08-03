@@ -1,19 +1,16 @@
 <template>
     <view class="container">
-        <text class="word-content">{{word.content}}</text>
-        <view class="pron-container">
-        <image class="pron-icon" src="../../static/pron-icon.png"></image>
-        <text class="word-pron">/{{word.pron}}/</text>
-        </view>
-        <text class="word-definition">{{word.definition}}</text>
+        <image class="logo" src="../../static/search-logo.png"></image>
+        <text class="name">小熊词典</text>
 
-        <text v-if="message" class="word-definition">{{message}}</text>
-
-        <view class="button-search" @click="remove">
+        <text v-if = "hasReview" class="word-content">{{word.content}}</text>
+        <text v-if = "hasReview" class="word-definition">{{word.definition}}</text>
+        <text v-if = "!hasReview" class="word-definition">您还没有添加，可以标记一些，方便回顾哦</text>
+        <view v-if = "hasReview" class="button-search" @click="remove">
             <text class="text-search" @click="remove">移除</text>
         </view>
 
-        <view class="button-search" @click="next">
+        <view v-if = "hasReview" class="button-search" @click="next">
             <text class="text-search" @click="next">下一个</text>
         </view>
 
@@ -28,46 +25,70 @@ import wordRepository from '../../data/word-repository'
       return {
         word:{
           content: "",
-          pron: "",
-          definition: ""},
+          definition: ""
+        },
           index:0,
-          message:""
+          message:"",
+          hasReview:false
           
       }
     },
     onLoad() {
-        this.index = 0;
-        var id = wordRepository.gerReviewList()[this.index];
-        var findword=wordRepository.getWordList()[id];
-        this.word={...findword}
+      this.initdata();
     
+    },
+    onShow() {
+      this.initdata();
+
     },
     methods: {
         remove:function(){
             var id = wordRepository.gerReviewList()[this.index];
-            const newArray =  wordRepository.gerReviewList().filter((element) => element !== id);
-            wordRepository.gerReviewList().splice(0, wordRepository.gerReviewList().length);
-            wordRepository.gerReviewList().push(...newArray)
+            wordRepository.removeReview(id);
             if(this.index>=wordRepository.gerReviewList().length){
-                this.index = wordRepository.gerReviewList().length-1
+                this.index = 0
             }
-            this.message="删除成功"
-            var id = wordRepository.gerReviewList()[this.index];
-            var findword=wordRepository.getWordList()[id];
-            this.word={...findword}
+            this.getWord(); 
+            uni.showToast({
+              title:"移除成功",
+              duration:500,
+              icon:'success',
+              mask:true
+            })
         
         },
         next:function(){
-            this.message=""
-            if(this.index<wordRepository.gerReviewList().length){
-                this.index = this.index +1;
-            }else{
-                this.index = 0;
+            this.index = this.index +1;
+            if(this.index>=wordRepository.gerReviewList().length){
+              this.index = 0;
+              uni.showToast({
+              title:"没有了",
+              duration:500,
+              icon:'success',
+              mask:true
+            })
             }
-          
             var id = wordRepository.gerReviewList()[this.index];
-            var findword=wordRepository.getWordList()[id];
-            this.word={...findword}
+            this.getWord(id);
+          },
+          getWord: function() {
+                this.hasReview = wordRepository.gerReviewList().length>0;
+                if(!this.hasReview){
+                  return;
+                }
+                var id = wordRepository.gerReviewList()[this.index];
+                wordRepository.getWordByIndex(id, (word) => {
+                  this.word = { ...word };
+                });
+          },
+          initdata:function(){
+            this.index = 0;
+            this.hasReview = wordRepository.gerReviewList().length>0;
+            if(!this.hasReview){
+              return;
+            }
+            var id = wordRepository.gerReviewList()[this.index];
+            this.getWord();
           }
   
     },
@@ -103,6 +124,11 @@ import wordRepository from '../../data/word-repository'
 .pron-container {
   display: flex;
   flex-direction: row;
+}
+
+.logo {
+  width: 100rpx;
+  height: 100rpx;
 }
 
 .pron-icon {

@@ -1,22 +1,21 @@
 <template>
   <view class="container">
+    <image class="logo" src="../../static/search-logo.png"></image>
+    <text class="name">小熊词典</text>
+
+    <view class="input-container">
+      <input class="input-search" v-model="search" v-on:blur="doSearch" placeholder="请输入..." type="text"/>
+    </view>
+
+    <view class="container">
       <text class="word-content">{{word.content}}</text>
-      <view class="pron-container">
-        <image class="pron-icon" src="../../static/pron-icon.png"></image>
-        <text class="word-pron" @click="read">/{{word.pron}}/</text>
-      </view>
-      <view class="pron-container">
-      <text v-show="showNot" class="word-definition">{{word.definition}}</text>
-      <text v-if="message" class="word-definition">{{message}} </text>
-      </view>
+      <text class="word-definition">{{word.definition}}</text>
+    </view>
 
-
-      <view class="button-next" @click="show(true)">
-        <text class="word-next" @click="show(true)">查看</text>
-      </view>
       <view class="button-next" @click="mark()">
         <text class="word-next" @click="mark()">标记</text>
       </view>
+
       <view class="button-next" @click="next">
         <text class="word-next" @click="next">下一个</text>
       </view>
@@ -34,15 +33,11 @@
         return {
           word:{
             content: "",
-            pron: "",
             definition: "",
-            audioUrl: ""
           },
-          worldListMax: null,
-          vocListMax: null,
-          showNot:false,
-          index:-1,
-          message:""
+          worldListMax:0,
+          index:0,
+          search:""
         }
       },
       onLoad() {
@@ -53,38 +48,65 @@
         if(!reviewList){
           array.push(...reviewList);
         }
-        this.getWord()
+        this.index = Math.floor(Math.random() * this.worldListMax) +1;
+        this.getWord();
       },
       methods: {
-          read: function (){
-            if(this.data.audioUrl){
-                console.log("read not supported")
-            }    
-          },
-          show: function(result){
-            this.message = ""
-            this.showNot = result;
-          },
           next:function(){
-            this.message = ""
-            this.show(false)
+            if(this.index>=wordRepository.getWordList().length){
+              this.index = 0;
+            }else {
+              this.index = this.index+1;
+            }
             this.getWord();
           },
-          getWord:function(){
-            var index = Math.floor(Math.random() * this.worldListMax) +1
-            this.index=index;
-            var word = wordRepository.getWordList()[index] 
-            this.word ={...word};
+          getWord: function() {
+                wordRepository.getWordByIndex(this.index, (word) => {
+                  console.log("getWordByIndex" + word.content + " " + word.definition);
+                  this.word = { ...word };
+                });
           },
           mark:function(){
-            this.message = "标记成功"
-            this.showNot = false;
             var array = wordRepository.gerReviewList();
             console.log("add review"+this.index)
             if(!wordRepository.gerReviewList().includes(this.index)){
               array.push(this.index);
             }
-          }
+            uni.showToast({
+              title:"标记成功",
+              duration:500,
+              icon:'success',
+              mask:true
+            })
+          },
+          doSearch: function (){
+            console.log("jdjfadf"+this.search)
+            if(!this.search){
+                return
+            }
+            var wordList = wordRepository.getWordList();
+            var index
+            for (let i = 0; i < wordList.length; i++) {
+                var context = wordList[i];
+                if(context.toLowerCase().startsWith(this.search)){
+                    index = i;
+                    break;
+                }
+            
+            }
+            if(index){
+               this.index = index;
+               this.getWord();
+            }else{
+              uni.showToast({
+              title:"没有找到",
+              duration:500,
+              icon:'failure',
+              mask:true
+            })
+            }
+
+          } 
       },
       mounted() {
         uni.addInterceptor('onHide', (options) => {
@@ -107,6 +129,11 @@
     justify-content: space-between;
     box-sizing: border-box;
   }
+
+  .logo {
+  width: 100rpx;
+  height: 100rpx;
+}
   
   .word-content {
     margin: 200rpx auto 18rpx;
@@ -152,6 +179,20 @@
     margin-top: 157rpx;
     margin-bottom: 37rpx;
   }
+
+  .input-container {
+  margin-top: 50rpx;
+  width: 100%;
+  height: 50rpx;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-search {
+  margin: auto;
+}
   
   .word-miss {
     margin: auto;
