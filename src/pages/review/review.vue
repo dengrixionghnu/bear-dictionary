@@ -1,7 +1,7 @@
 <template>
     <view class="container">
         <image class="logo" src="../../static/search-logo.png"></image>
-        <text class="name">小熊词典</text>
+        <text class="name">浣熊词典</text>
 
         <text v-if = "hasReview" class="word-content">{{word.content}}</text>
         <text v-if = "hasReview" class="word-definition">{{word.definition}}</text>

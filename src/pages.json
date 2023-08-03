@@ -3,18 +3,18 @@
 		{
 			"path": "pages/word/word",
 			"style": {
-				"navigationBarTitleText": "小熊词典"
+				"navigationBarTitleText": "浣熊词典"
 			}
 		},{
 			"path": "pages/review/review",
 			"style": {
-				"navigationBarTitleText": "小熊词典"
+				"navigationBarTitleText": "浣熊词典"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "小熊词典",
+		"navigationBarTitleText": "浣熊词典",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},

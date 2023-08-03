@@ -20,7 +20,7 @@ module.exports = {
     getWordDetail: function(trem,callback){
         var result = {content:"",definition:""};
         uni.request({
-            url: ' https://dict-mobile.iciba.com/interface/index.php?c=word&m=getsuggest&nums=10&is_need_mean=0&word='+trem,
+            url: 'https://dict-mobile.iciba.com/interface/index.php?c=word&m=getsuggest&nums=10&is_need_mean=0&word='+trem,
             method: 'GET',
             success: function (res) {
                 var message = res.data.message;

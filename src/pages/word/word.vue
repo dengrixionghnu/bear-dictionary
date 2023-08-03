@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <image class="logo" src="../../static/search-logo.png"></image>
-    <text class="name">小熊词典</text>
+    <text class="name">浣熊词典</text>
 
     <view class="input-container">
       <input class="input-search" v-model="search" v-on:blur="doSearch" placeholder="请输入..." type="text"/>
@@ -53,22 +53,16 @@
       },
       methods: {
           next:function(){
-            if(this.index>=wordRepository.getWordList().length){
-              this.index = 0;
-            }else {
-              this.index = this.index+1;
-            }
+            this.index = Math.floor(Math.random() * this.worldListMax) +1;
             this.getWord();
           },
           getWord: function() {
                 wordRepository.getWordByIndex(this.index, (word) => {
-                  console.log("getWordByIndex" + word.content + " " + word.definition);
                   this.word = { ...word };
                 });
           },
           mark:function(){
             var array = wordRepository.gerReviewList();
-            console.log("add review"+this.index)
             if(!wordRepository.gerReviewList().includes(this.index)){
               array.push(this.index);
             }
@@ -80,23 +74,24 @@
             })
           },
           doSearch: function (){
-            console.log("jdjfadf"+this.search)
             if(!this.search){
                 return
             }
             var wordList = wordRepository.getWordList();
-            var index
+            var index = -1;
             for (let i = 0; i < wordList.length; i++) {
                 var context = wordList[i];
-                if(context.toLowerCase().startsWith(this.search)){
+                console.log(context,this.search.toLowerCase)
+                if(context.startsWith(this.search.toLowerCase())){
                     index = i;
                     break;
                 }
             
             }
-            if(index){
+            if(index>=0){
                this.index = index;
                this.getWord();
+               this.search = "";
             }else{
               uni.showToast({
               title:"没有找到",
